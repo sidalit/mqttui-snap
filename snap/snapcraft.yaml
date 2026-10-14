@@ -1,0 +1,61 @@
+name: mqttui
+base: core26
+version: '0.24.0'
+title: mqttui
+summary: Terminal interface for browsing MQTT topics and publishing messages
+description: |
+  mqttui shows the topics of an MQTT broker as a live tree in the terminal.
+  It can also publish messages, log topics to stdout and read single values
+  for scripts.
+
+  **Examples**
+
+     mqttui --broker mqtt://test.mosquitto.org "hello/world"
+     mqttui publish --retain "foo/bar" "Banana?"
+     mqttui log "sensors/#"
+     mqttui read-one room/temp
+
+  **TLS certificates**
+
+  Certificate and key files for --ca-cert, --client-cert and
+  --client-private-key must be in your home directory, outside hidden
+  folders such as ~/.mqtt.
+license: GPL-3.0-or-later
+grade: stable
+confinement: strict
+website: https://github.com/EdJoPaTo/mqttui
+source-code: https://github.com/EdJoPaTo/mqttui
+issues: https://github.com/EdJoPaTo/mqttui/issues
+
+platforms:
+  amd64:
+  arm64:
+  armhf:
+  ppc64el:
+  riscv64:
+  s390x:
+
+apps:
+  mqttui:
+    command: bin/mqttui
+    completer: share/bash-completion/completions/mqttui
+    plugs:
+      - home
+      - network
+
+parts:
+  mqttui:
+    plugin: rust
+    source: https://github.com/EdJoPaTo/mqttui.git
+    source-tag: 'v0.24.0'
+    rust-channel: '1.93.0'
+    build-packages:
+      - build-essential
+      - clang
+      - libclang-dev
+      - cmake
+      - pkg-config
+    override-build: |
+      craftctl default
+      install -Dm644 target/completions/mqttui.bash "$CRAFT_PART_INSTALL/share/bash-completion/completions/mqttui"
+      install -Dm644 LICENSE "$CRAFT_PART_INSTALL/share/doc/mqttui/LICENSE"
