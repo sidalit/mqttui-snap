@@ -26,6 +26,7 @@ confinement: strict
 website: https://github.com/EdJoPaTo/mqttui
 source-code: https://github.com/EdJoPaTo/mqttui
 issues: https://github.com/EdJoPaTo/mqttui/issues
+contact: https://github.com/sidalit/mqttui-snap/issues
 
 platforms:
   amd64:
