@@ -1,6 +1,6 @@
 name: mqttui
 base: core26
-version: '0.24.0'
+adopt-info: mqttui
 title: mqttui
 summary: Terminal interface for browsing MQTT topics and publishing messages
 description: |
@@ -48,6 +48,7 @@ parts:
   mqttui:
     plugin: rust
     source: https://github.com/EdJoPaTo/mqttui.git
+    # renovate: depName=EdJoPaTo/mqttui
     source-tag: 'v0.24.0'
     rust-channel: '1.93.0'
     build-packages:
@@ -56,6 +57,9 @@ parts:
       - libclang-dev
       - cmake
       - pkg-config
+    override-pull: |
+      craftctl default
+      craftctl set version="$(git -C "$CRAFT_PART_SRC" describe --tags --match 'v[0-9]*' | sed 's/^v//')"
     override-build: |
       craftctl default
       install -Dm644 target/completions/mqttui.bash "$CRAFT_PART_INSTALL/share/bash-completion/completions/mqttui"
